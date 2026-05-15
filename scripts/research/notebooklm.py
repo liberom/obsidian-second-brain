@@ -56,6 +56,8 @@ def vault_scan(topic: str) -> list[dict]:
         if not root.exists():
             continue
         for path in root.rglob("*.md"):
+            if "Research/NotebookLM/" in str(path):
+                continue
             try:
                 text = path.read_text(errors="ignore").lower()
             except OSError:
@@ -235,11 +237,11 @@ ai-first: true
 confidence: stated
 ---
 
-# {topic} — NotebookLM synthesis ({date})
+# {topic}: NotebookLM synthesis ({date})
 
 ## For future Claude
 
-NotebookLM source-grounded synthesis on "{topic}". Sources included the vault baseline bundle ({baseline_count} notes) plus any external sources Eugeniu added manually in NotebookLM. Output cites source titles in brackets where the underlying NotebookLM run included them. This is a parallel research track to `/research-deep` (Perplexity-based) — NotebookLM is grounded in the user's own sources, not the open web. Confidence: stated (NotebookLM is reliable on the sources you give it; less reliable on synthesis breadth).
+NotebookLM source-grounded synthesis on "{topic}". Sources included the vault baseline bundle ({baseline_count} notes) plus any external sources Eugeniu added manually in NotebookLM. Output cites source titles in brackets where the underlying NotebookLM run included them. This is a parallel research track to `/research-deep` (Perplexity-based). NotebookLM is grounded in the user's own sources, not the open web. Confidence: stated (NotebookLM is reliable on the sources you give it; less reliable on synthesis breadth).
 
 ## Vault baseline that fed this notebook
 
