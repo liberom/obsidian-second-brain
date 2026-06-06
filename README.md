@@ -603,6 +603,38 @@ Codex has no native slash-command runtime, so to run a command by name there, in
 
 Run `bash scripts/build.sh` with no arguments to build all four platforms at once. See [`dist/<platform>/INSTALL.md`](scripts/build.sh) after building for platform-specific notes.
 
+### Run on Hermes / open models
+
+The skill is model-agnostic. The OpenCode build (and the Codex / Gemini builds) are plain instruction files, so they run on whatever model the host CLI is pointed at - including open models like [Nous Research Hermes](https://github.com/NousResearch/hermes-agent). No separate build, no code changes. You set the model on OpenCode's side.
+
+Point OpenCode at Hermes via OpenRouter. Authenticate once (`/connect`, search OpenRouter, paste your key - or `export OPENROUTER_API_KEY=...`), then in `opencode.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "openrouter/nousresearch/hermes-4-70b",
+  "provider": {
+    "openrouter": {
+      "models": {
+        "nousresearch/hermes-4-70b": {}
+      }
+    }
+  }
+}
+```
+
+Hermes models on OpenRouter (as of 2026-06, [openrouter.ai](https://openrouter.ai/models?q=hermes)):
+
+| Model id | Best for | Cost (in / out per 1M tokens) |
+|---|---|---|
+| `nousresearch/hermes-4-70b` | Default. Cheap, capable, 131k context. | $0.13 / $0.40 |
+| `nousresearch/hermes-4-405b` | Strongest instruction-following for the synthesis-heavy commands. | $1.00 / $3.00 |
+| `nousresearch/hermes-3-llama-3.1-405b:free` | Zero-cost trial (needs any OpenRouter key to authenticate). | free |
+
+For the privacy story, run a smaller Hermes locally through [Ollama](https://ollama.com) or LM Studio and point OpenCode at the local endpoint - no data leaves your machine.
+
+What to expect (open models follow instructions less reliably than Claude, so this is honest, not a promise of parity): the core commands - `/obsidian-save`, `/obsidian-daily`, `/obsidian-capture`, `/obsidian-find`, `/obsidian-task`, and `/research` in free mode - hold up well. The sub-agent-heavy commands and the deep synthesis ones (`/obsidian-architect`, `/obsidian-reconcile`, `/research-deep`) lean hard on instruction-following, so prefer `hermes-4-405b` (or Claude) for those. The AI-first vault rule still applies on every write regardless of model.
+
 ### Research toolkit (optional)
 
 The 6 research commands need API keys. Run `install.sh` and answer "y" to the research prompt. That sets up `~/.config/obsidian-second-brain/.env`. Or do it manually:
@@ -645,6 +677,9 @@ Run the one-line installer from the Install section below. It clones the repo to
 
 ### Does this work with Codex CLI, Gemini CLI, or OpenCode?
 Yes. The repo ships a build script that compiles the platform-neutral source into four platform-specific outputs: Claude Code (slash commands + `CLAUDE.md`), Codex CLI (`AGENTS.md` + `.codex/commands/`), Gemini CLI (`GEMINI.md` + `.gemini/commands/`), and OpenCode (`AGENTS.md` + `.opencode/commands/`). Run `bash scripts/build.sh --platform codex-cli` (or another platform name), then copy the resulting `dist/<platform>/` tree into your vault. The non-Claude builds auto-generate a routing table that maps natural-language triggers to command files, so the same 40 cross-platform commands work no matter which CLI you use (the 4 Google Calendar commands are Claude Code only, since they depend on the claude.ai Calendar connector). The vault rules (AI-first notes, frontmatter, wikilinks, recency markers) are identical across all four platforms.
+
+### Does this run on Hermes or other open models?
+Yes. The skill is model-agnostic - the OpenCode, Codex, and Gemini builds are plain instruction files, so they run on whatever model the host CLI uses, including open models like Nous Research Hermes. The most common path is OpenCode pointed at Hermes via OpenRouter (or a local Hermes through Ollama / LM Studio for full privacy). See "Run on Hermes / open models" in the Install section for the exact config. Honest expectation: the core save / daily / capture / find / task commands and free-mode `/research` hold up well; the sub-agent-heavy and deep-synthesis commands (`/obsidian-architect`, `/obsidian-reconcile`, `/research-deep`) want a stronger instruction-follower, so prefer `hermes-4-405b` or Claude for those.
 
 ### Does this work with Obsidian Sync?
 Yes. The skill writes to your vault as standard markdown files. Obsidian Sync, iCloud, Syncthing, and Git-based sync all work without modification.
