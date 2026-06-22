@@ -1,5 +1,5 @@
 ---
-description: Web research with citations - Perplexity Sonar when an API key is set, free key-less sources (Wikipedia, HackerNews, arXiv, Reddit, and more) otherwise. Deep dossier with summary, facts, timeline, players, contrarian views, open questions
+description: Web research with citations - Perplexity Sonar when an API key is set, free key-less sources (Wikipedia, HackerNews, arXiv, Reddit, and more) plus optional API-key sources with free tiers (Brave, Tavily) otherwise. Deep dossier with summary, facts, timeline, players, contrarian views, open questions
 category: research
 triggers_en: ["research this", "look up", "find information about", "perplexity research"]
 ---
@@ -12,7 +12,7 @@ Use the obsidian-second-brain skill. Execute `/research [topic]`:
    ```bash
    uv run -m scripts.research.research "<topic>"
    ```
-   The script auto-selects its mode: if `PERPLEXITY_API_KEY` is set it uses Perplexity Sonar (paid); otherwise it falls back to free, key-less sources. Pass `--free` to force free mode even when a key is set, or `--academic` (free mode only) to restrict to scholarly sources (arXiv, Semantic Scholar, OpenAlex, CrossRef).
+   The script auto-selects its mode: if `PERPLEXITY_API_KEY` is set it uses Perplexity Sonar (paid); otherwise it falls back to free, key-less sources plus any optional API-key sources with free tiers (Brave Search when `BRAVE_API_KEY` is set, Tavily when `TAVILY_API_KEY` is set). Pass `--free` to force free mode even when a key is set, or `--academic` (free mode only) to restrict to scholarly sources (arXiv, Semantic Scholar, OpenAlex, CrossRef).
 
 3. Handle the output by mode:
    - **Paid mode** - the script prints a finished dossier (Summary, Key Facts with recency markers, Timeline, Key Players, Contrarian Views, Further Reading, Open Questions, Sources) and saves the AI-first note itself to `Research/Web/` plus a log line. Show the dossier verbatim, then surface the saved file path. Nothing else to do.

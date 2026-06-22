@@ -61,7 +61,8 @@ Rules:
 
 
 def _free_sources(academic: bool):
-    """Build the free key-less source clients. Imported lazily so paid mode and
+    """Build the free key-less source clients plus optional API-key sources
+    (Brave, Tavily) when their keys are set. Imported lazily so paid mode and
     the test suite never pay for them."""
     from .lib.sources.arxiv import ArxivSource
     from .lib.sources.crossref import CrossRefSource
@@ -76,7 +77,7 @@ def _free_sources(academic: bool):
     from .lib.sources.reddit import RedditSource
     from .lib.sources.wikipedia import WikipediaSource
 
-    return [
+    sources = [
         DuckDuckGoSource(),
         WikipediaSource(),
         HackerNewsSource(),
@@ -84,6 +85,17 @@ def _free_sources(academic: bool):
         ArxivSource(),
         SemanticScholarSource(),
     ]
+
+    # Optional API-key sources with free tiers - included when keys are present.
+    if os.environ.get("BRAVE_API_KEY", "").strip():
+        from .lib.sources.brave import BraveSource
+        sources.append(BraveSource())
+
+    if os.environ.get("TAVILY_API_KEY", "").strip():
+        from .lib.sources.tavily import TavilySource
+        sources.append(TavilySource())
+
+    return sources
 
 
 def run_free(topic: str, academic: bool) -> int:

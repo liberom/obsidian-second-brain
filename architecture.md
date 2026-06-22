@@ -135,7 +135,7 @@ Every command that writes to a vault must follow `references/ai-first-rules.md`.
 Lives under `scripts/research/`. One Python entry point per research command plus a `lib/` layer.
 
 - **Keyed mode:** Perplexity Sonar for web research, Grok (xAI Agent Tools API, default grok-4) for X and live search, Gemini File Search for vault-grounded NotebookLM queries.
-- **Free key-less mode:** when no Perplexity key is set, `/research` and `/research-deep` fall back to roughly ten free public sources (Wikipedia, HackerNews, arXiv, Reddit, Lobsters, dev.to, OpenAlex, Semantic Scholar, CrossRef, DuckDuckGo) via `scripts/research/lib/`, and Claude synthesizes the dossier. This removed the project's single biggest adoption barrier - the toolkit no longer hard-errors without a paid key.
+- **Free key-less mode:** when no Perplexity key is set, `/research` and `/research-deep` fall back to free public sources (Wikipedia, HackerNews, arXiv, Reddit, Lobsters, dev.to, OpenAlex, Semantic Scholar, CrossRef, DuckDuckGo) via `scripts/research/lib/`, and Claude synthesizes the dossier. Optional API-key sources with free tiers (Brave Search, Tavily) are added automatically when `BRAVE_API_KEY` / `TAVILY_API_KEY` are set, improving coverage without Perplexity. This removed the project's single biggest adoption barrier - the toolkit no longer hard-errors without a paid key.
 - **Other ingest:** `/youtube` (transcript via `youtube-transcript-api`), `/podcast` (RSS via `feedparser`).
 
 Configuration is read from the environment or `~/.config/obsidian-second-brain/.env`; `OBSIDIAN_VAULT_PATH` is required so notes save to the right vault on any machine.

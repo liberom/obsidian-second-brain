@@ -311,8 +311,8 @@ Powered by xAI Grok (live X access) + Perplexity Sonar (web research) + YouTube.
 |---|---|
 | `/x-read [url]` | Deep-read an X post: verbatim post + thread + TL;DR + claims + reply sentiment + voices |
 | `/x-pulse [topic]` | Scan X for what's trending: themes, voices, hooks, post ideas |
-| `/research [topic]` | Web research with citations: full dossier with recency markers and open questions. Uses Perplexity when keyed, free key-less sources (Wikipedia, HackerNews, arXiv, Reddit, and more) otherwise |
-| `/research-deep [topic]` | Vault-first synthesis (open web): scans your vault, finds gaps, fills them via Perplexity + Grok (or free key-less sources when unkeyed), propagates updates across people/projects/ideas |
+| `/research [topic]` | Web research with citations: full dossier with recency markers and open questions. Uses Perplexity when keyed; free key-less sources (Wikipedia, HackerNews, arXiv, Reddit, and more) plus optional API-key sources with free tiers (Brave, Tavily) otherwise |
+| `/research-deep [topic]` | Vault-first synthesis (open web): scans your vault, finds gaps, fills them via Perplexity + Grok (or free key-less sources plus optional Brave/Tavily when unkeyed), propagates updates across people/projects/ideas |
 | `/notebooklm [topic]` | Vault-grounded synthesis via Gemini File Search. Uploads top 12 vault notes, returns a grounded answer with citations. No browser, one HTTP call. Pairs with `/research-deep` for dual-track research. |
 | `/youtube [url]` | Extract transcript + metadata + top comments → AI-first summary |
 | `/podcast [url]` | Apple Podcasts or RSS → transcript (RSS tag / Whisper / show-notes) + AI-first summary |
@@ -320,6 +320,8 @@ Powered by xAI Grok (live X access) + Perplexity Sonar (web research) + YouTube.
 **Setup:** copy `.env.example` to `~/.config/obsidian-second-brain/.env`, add your keys (xAI, Perplexity, YouTube optional, OpenAI optional for podcast Whisper). Run `install.sh` and answer "y" to the research prompt to do this automatically.
 
 **No keys? `/research` and `/research-deep` still work.** With no `PERPLEXITY_API_KEY` set they automatically fall back to free, key-less sources (Wikipedia, HackerNews, arXiv, Reddit, Lobsters, dev.to, OpenAlex, Semantic Scholar, CrossRef, DuckDuckGo) and Claude synthesizes the dossier. Pass `--free` to force it even when keyed, or `--academic` to restrict to scholarly sources. The other research commands (`/x-read`, `/x-pulse`, `/notebooklm`, `/youtube`) still need their respective keys.
+
+**Better free results with optional keys.** Adding `BRAVE_API_KEY` (free tier: 2,000 queries/month, [brave.com/search/api](https://brave.com/search/api/)) and/or `TAVILY_API_KEY` (free tier: 1,000 queries/month, [app.tavily.com](https://app.tavily.com/)) gives the free-mode research pipeline dedicated web-search APIs on top of the key-less sources, significantly improving coverage without Perplexity.
 
 <details>
 <summary><strong>See the thinking tools in action</strong></summary>
@@ -665,8 +667,10 @@ Keys you need:
 | `GEMINI_API_KEY` | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) | `/notebooklm` (vault-grounded synthesis via Gemini File Search) | Free tier covers it. Paid: ~$0.004/call (Flash), ~$0.06/call (Pro). |
 | `YOUTUBE_API_KEY` | [console.cloud.google.com](https://console.cloud.google.com) | `/youtube` metadata + comments (optional, transcripts free without) | Free tier 10k units/day |
 | `OPENAI_API_KEY` | [platform.openai.com](https://platform.openai.com/api-keys) | `/podcast` Whisper transcription (optional, falls back to show-notes if unset) | ~$0.006/min |
+| `BRAVE_API_KEY` | [brave.com/search/api](https://brave.com/search/api/) | `/research`, `/research-deep` free-mode web search (optional, added to key-less sources) | Free tier 2,000 queries/month |
+| `TAVILY_API_KEY` | [app.tavily.com](https://app.tavily.com/) | `/research`, `/research-deep` free-mode web search (optional, added to key-less sources) | Free tier 1,000 queries/month |
 
-Without keys, the 35 non-research commands work fully, and `/research` + `/research-deep` fall back to free, key-less sources. The rest of the research toolkit degrades gracefully.
+Without keys, the 35 non-research commands work fully, and `/research` + `/research-deep` fall back to free, key-less sources. Adding `BRAVE_API_KEY` and/or `TAVILY_API_KEY` (both have free tiers) improves free-mode research quality. The rest of the research toolkit degrades gracefully.
 
 ---
 
@@ -694,7 +698,7 @@ Yes. The skill is model-agnostic - the OpenCode, Codex, and Gemini builds are pl
 Yes. The skill writes to your vault as standard markdown files. Obsidian Sync, iCloud, Syncthing, and Git-based sync all work without modification.
 
 ### Do I need API keys to use this?
-Mostly no. The vault commands (`/obsidian-save`, `/obsidian-daily`, etc.) need no API keys. `/research` and `/research-deep` are also key-free now - with no Perplexity key they automatically fall back to free, key-less sources (Wikipedia, HackerNews, arXiv, Reddit, and more) and Claude synthesizes the dossier. The remaining research commands (`/x-read`, `/x-pulse`, `/notebooklm`, `/youtube`, `/podcast`) need their respective keys (xAI Grok, Perplexity, Google Gemini, optionally YouTube Data API v3 / OpenAI Whisper) and exit with a clear setup message when one is missing. The calendar commands (`/obsidian-agenda`, `/obsidian-schedule`, `/obsidian-meeting`) need the Google Calendar MCP connector rather than an API key.
+Mostly no. The vault commands (`/obsidian-save`, `/obsidian-daily`, etc.) need no API keys. `/research` and `/research-deep` are also key-free now - with no Perplexity key they automatically fall back to free, key-less sources (Wikipedia, HackerNews, arXiv, Reddit, and more) and Claude synthesizes the dossier. For better free-mode results, add `BRAVE_API_KEY` (2,000 free queries/month) and/or `TAVILY_API_KEY` (1,000 free queries/month). The remaining research commands (`/x-read`, `/x-pulse`, `/notebooklm`, `/youtube`, `/podcast`) need their respective keys (xAI Grok, Perplexity, Google Gemini, optionally YouTube Data API v3 / OpenAI Whisper) and exit with a clear setup message when one is missing. The calendar commands (`/obsidian-agenda`, `/obsidian-schedule`, `/obsidian-meeting`) need the Google Calendar MCP connector rather than an API key.
 
 ### How is this different from Notion AI or Mem?
 Notion AI and Mem are closed-source SaaS products that own your data. This skill stores everything as plain markdown in your local Obsidian vault, with no vendor lock-in. The AI is on top of your data, not behind it. You can switch tools or stop using the skill at any point and still have your full vault.

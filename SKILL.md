@@ -898,7 +898,7 @@ Can also be triggered automatically by `/obsidian-graduate`, `/obsidian-health` 
 
 Five commands that pull external knowledge into the vault - X posts, X discourse, web research with citations, and YouTube videos. All output AI-first notes per the vault's Section 0 rule (preamble, rich frontmatter, recency markers, mandatory wikilinks, sources verbatim).
 
-**Setup:** API keys live at `~/.config/obsidian-second-brain/.env`. Run `install.sh` and answer "y" to the research toolkit prompt, or copy `.env.example` manually. xAI Grok and Perplexity keys are required; YouTube key is optional (transcripts work without it).
+**Setup:** API keys live at `~/.config/obsidian-second-brain/.env`. Run `install.sh` and answer "y" to the research toolkit prompt, or copy `.env.example` manually. xAI Grok and Perplexity keys are required; YouTube key is optional (transcripts work without it). Optional: add `BRAVE_API_KEY` (2,000 free queries/month) and/or `TAVILY_API_KEY` (1,000 free queries/month) to improve free-mode research coverage.
 
 **Stack:** Python 3.10+ with `uv`. Install deps via `uv sync` from the repo root.
 

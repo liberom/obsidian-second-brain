@@ -27,6 +27,7 @@ def test_library_imports_without_vault_path():
     assert "OBSIDIAN_VAULT_PATH" not in os.environ or True  # documents intent
     # Importing every real source must not raise (and must not need a vault).
     from scripts.research.lib.sources.arxiv import ArxivSource
+    from scripts.research.lib.sources.brave import BraveSource
     from scripts.research.lib.sources.crossref import CrossRefSource
     from scripts.research.lib.sources.devto import DevToSource
     from scripts.research.lib.sources.duckduckgo import DuckDuckGoSource
@@ -35,14 +36,16 @@ def test_library_imports_without_vault_path():
     from scripts.research.lib.sources.openalex import OpenAlexSource
     from scripts.research.lib.sources.reddit import RedditSource
     from scripts.research.lib.sources.semantic_scholar import SemanticScholarSource
+    from scripts.research.lib.sources.tavily import TavilySource
     from scripts.research.lib.sources.wikipedia import WikipediaSource
 
     names = {
-        ArxivSource.name, CrossRefSource.name, DevToSource.name, DuckDuckGoSource.name,
-        HackerNewsSource.name, LobstersSource.name, OpenAlexSource.name, RedditSource.name,
-        SemanticScholarSource.name, WikipediaSource.name,
+        ArxivSource.name, BraveSource.name, CrossRefSource.name, DevToSource.name,
+        DuckDuckGoSource.name, HackerNewsSource.name, LobstersSource.name,
+        OpenAlexSource.name, RedditSource.name, SemanticScholarSource.name,
+        TavilySource.name, WikipediaSource.name,
     }
-    assert len(names) == 10  # all source names distinct
+    assert len(names) == 12  # all source names distinct
 
 
 def test_result_json_roundtrip():

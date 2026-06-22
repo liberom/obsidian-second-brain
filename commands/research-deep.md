@@ -1,5 +1,5 @@
 ---
-description: Vault-first deep research - scans the vault, fills gaps (Perplexity + Grok when keyed, free key-less sources otherwise), synthesizes a delta, then propagates updates across people/projects/ideas via /obsidian-save
+description: Vault-first deep research - scans the vault, fills gaps (Perplexity + Grok when keyed, free key-less sources plus optional API-key sources with free tiers otherwise), synthesizes a delta, then propagates updates across people/projects/ideas via /obsidian-save
 category: research
 triggers_en: ["deep research", "thorough research", "vault-first research", "research gaps"]
 ---
@@ -12,7 +12,7 @@ Use the obsidian-second-brain skill. Execute `/research-deep [topic]`:
    ```bash
    uv run -m scripts.research.research_deep "<topic>"
    ```
-   The script auto-selects its mode: if `PERPLEXITY_API_KEY` is set it runs the paid pipeline below; otherwise it falls back to free, key-less sources. Pass `--free` to force free mode, or `--academic` (free mode only) to restrict to scholarly sources. Phase 1 (vault scan) is identical in both modes, so OBSIDIAN_VAULT_PATH must be set either way.
+   The script auto-selects its mode: if `PERPLEXITY_API_KEY` is set it runs the paid pipeline below; otherwise it falls back to free, key-less sources plus any optional API-key sources with free tiers (Brave Search when `BRAVE_API_KEY` is set, Tavily when `TAVILY_API_KEY` is set). Pass `--free` to force free mode, or `--academic` (free mode only) to restrict to scholarly sources. Phase 1 (vault scan) is identical in both modes, so OBSIDIAN_VAULT_PATH must be set either way.
 
 3. **Paid mode** - the script runs a 4-phase pipeline and finishes the work itself:
    - **Phase 1** - vault scan: finds existing notes mentioning the topic (the baseline).
