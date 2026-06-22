@@ -1,7 +1,7 @@
 ---
 description: Create or move a Google Calendar event - standalone, from a vault task, or via suggested-time slots - and propagate the link back to the task
 category: vault
-exclude: [codex-cli, gemini-cli, opencode]
+exclude: [codex-cli, gemini-cli, opencode, pi]
 triggers_en: ["schedule a meeting", "book a meeting", "put this on my calendar", "schedule this task", "find a time for"]
 ---
 

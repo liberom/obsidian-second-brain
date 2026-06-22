@@ -1,7 +1,7 @@
 ---
 description: Read Google Calendar and write an AI-first snapshot to the vault - today, week, next week, or a custom range
 category: vault
-exclude: [codex-cli, gemini-cli, opencode]
+exclude: [codex-cli, gemini-cli, opencode, pi]
 triggers_en: ["review my agenda", "check my calendar", "what's on my schedule", "what's on the calendar", "agenda for this week", "agenda for next week"]
 ---
 

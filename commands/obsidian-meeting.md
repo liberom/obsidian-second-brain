@@ -1,7 +1,7 @@
 ---
 description: Generate a meeting note in the vault from a Google Calendar event - pre-fills attendees, time, and link so notes/decisions/action items can be captured
 category: vault
-exclude: [codex-cli, gemini-cli, opencode]
+exclude: [codex-cli, gemini-cli, opencode, pi]
 triggers_en: ["create a meeting note", "log this meeting", "meeting note for", "prep this meeting", "notes for last meeting"]
 ---
 

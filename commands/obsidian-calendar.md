@@ -1,7 +1,7 @@
 ---
 description: Reconcile the vault against your calendar - flag deadlines and commitments implied by notes that are not on the calendar. Flag only, never adds events
 category: vault
-exclude: [codex-cli, gemini-cli, opencode]
+exclude: [codex-cli, gemini-cli, opencode, pi]
 triggers_en: ["calendar check", "reconcile calendar", "what's not on my calendar", "calendar reconciliation", "am I missing anything on my calendar"]
 ---
 
